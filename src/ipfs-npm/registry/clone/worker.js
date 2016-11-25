@@ -38,6 +38,10 @@ function handleInit (opts) {
 }
 
 function handleChange (data) {
+  // TODO: handle init not being finished
+  // this can happen when things are hanging due to a flush being in process
+  // Idea: use async.queue for all things and pause it on start
+  // on init done, start the queue
   const callback = () => {
     process.send({
       cmd: 'processed',

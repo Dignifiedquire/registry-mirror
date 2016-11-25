@@ -11,7 +11,7 @@ const Workers = require('../../src/ipfs-npm/registry/clone/workers')
 
 const testWorker = path.join(__dirname, 'test-worker.js')
 
-describe.only('Workers', () => {
+describe('Workers', () => {
   describe('options', () => {
     it('throws on missing worker file', () => {
       expect(
