@@ -21,14 +21,15 @@ module.exports = {
       }
 
       async.series([
-        (cb) => npmIPFS.registry.index.connect(ipfs, cb),
+        // TODO: enable when we have a stable machine to connect to
+        // (cb) => npmIPFS.registry.index.connect(ipfs, cb),
         (cb) => npmIPFS.registry.index.cacheRegistry(ipfs, cb)
-      ], (err, results) => {
+      ], (err, hash) => {
         if (err) {
           throw err
         }
 
-        console.log('Updated registry cache to:', results[1])
+        console.log('Updated registry cache to: %s', hash)
       })
     })
   }

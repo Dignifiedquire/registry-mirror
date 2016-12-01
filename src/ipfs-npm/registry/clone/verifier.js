@@ -37,17 +37,16 @@ module.exports = class Verifier {
       this.report.error = err
       this.report[info.tarball] = info
 
-      delete this.counter[info.path]
-
       // in case end has already been called by the error handler
       // sometimes it happens :(
       try {
         writer.end()
       } catch (err) {}
 
-      log('error %s, \n%s', u, err.message)
+      log('error %s, \n%s\n', u, err.message, msg)
 
-      if (fatal) {
+      if (fatal || this.counter[info.path] > 4) {
+        delete this.counter[info.path]
         callback(new Error(msg + ' ' + info.tarball))
       } else {
         this.verify(info, callback)
@@ -95,7 +94,7 @@ module.exports = class Verifier {
           }
         })
         .pipe(sha.stream(info.shasum))
-        .on('error', errorHandler('failed to verify shasum', writer))
+        .on('error', errorHandler('failed to verify shasum', writer, true))
         .pipe(writer)
         .on('error', errorHandler('failed to write', writer))
     })

@@ -13,7 +13,7 @@ module.exports = {
     port: {
       desc: 'Port the server should run on',
       type: 'number',
-      default: 5001
+      default: 9090
     },
     host: {
       desc: 'Port the server should run on',

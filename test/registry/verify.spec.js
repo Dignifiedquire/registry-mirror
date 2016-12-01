@@ -177,11 +177,14 @@ describe('Verifier', () => {
           process.nextTick(() => cb(new Error('fail')))
           return Writable()
         })
+      sinon.stub(verifier, 'verify', (info, cb) => {
+        cb(new Error('failed to verify'))
+      })
 
       verifier.update(info, (err) => {
-        expect(err).to.be.an('error')
-        expect(err.message).to.match(/failed to save/)
+        expect(err).to.exist
         memblob.createWriteStream.restore()
+        verifier.verify.restore()
         done()
       })
     })
@@ -201,7 +204,7 @@ describe('Verifier', () => {
         expect(
           memblob.data['module-best-practices-1.1.23.tgz']
         ).to.be.eql(
-          fs.readFileSync(path.join(__dirname, 'fixtures/module-best-practices-1.1.23.tgz'))
+          fs.readFileSync(path.join(__dirname, '../fixtures/module-best-practices-1.1.23.tgz'))
           )
         done()
       })
